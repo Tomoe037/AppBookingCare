@@ -1,0 +1,34 @@
+# .gitignore chung cho cả frontend và backend
+
+# Node modules
+node_modules/
+
+# Thư mục log
+logs/
+*.log
+
+# Các tệp môi trường
+.env
+
+# Thư mục build (frontend)
+dist/
+dist-ssr
+
+# Các thư mục và tệp của hệ thống
+.DS_Store
+Thumbs.db
+
+# Các tệp cấu hình của IDE
+.vscode/
+.idea
+
+# Các tệp của Sequelize (nếu bạn dùng sequelize-cli)
+sequelize-meta.json
+
+# Tệp tạm thời do editor tạo ra
+*.swp
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

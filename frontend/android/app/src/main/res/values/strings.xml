@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BookingCare</string>
+    <string name="title_activity_main">BookingCare</string>
+    <string name="package_name">com.tomoe.bookingcare</string>
+    <string name="custom_url_scheme">com.tomoe.bookingcare</string>
+</resources>
