@@ -2,7 +2,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import configViewEngine from "./config/viewEngine.js"
-import initWebRoutes from "./routes/web.js";
+import initWebRoutes from "./routes/web.router.js";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -17,6 +17,7 @@ app.use(
     credentials: true,
   })
 );
+
 
 // Cấu hình body-parser
 app.use(bodyParser.json());
