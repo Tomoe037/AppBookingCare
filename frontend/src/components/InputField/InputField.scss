@@ -1,0 +1,20 @@
+.input-field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+  
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: inherit;
+      background-color: transparent;
+    }
+  
+    
+  }
+  
