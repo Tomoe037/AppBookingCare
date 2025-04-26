@@ -13,6 +13,7 @@ const useRegisterViewModel = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ const useRegisterViewModel = () => {
     // Tạo một bản sao mới của form
     const updatedForm = {
       ...form, // giữ nguyên tất cả các giá trị cũ
-      [fieldName]: fieldValue, 
+      [fieldName]: fieldValue,
     };
     console.log("check updatedFormfrom usevm :", updatedForm);
     setForm(updatedForm);
@@ -38,26 +39,38 @@ const useRegisterViewModel = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const error = validateRegisterForm(form);
-    if (error) {
-      alert(error);
+    setError("");
+    const validationError = validateRegisterForm(form);
+    if (validationError) {
+      setError(validationError);
       setLoading(false);
       return;
     }
     try {
       const res = await registerAPI(form);
-      dispatch(setUser(res.data));
-      console.log("check res from userVm", res.data);
-      alert("Đăng ký thành công!");
-      navigate("/home");
+
+      if (res.data && res.data.errCode !== 0) {
+        setError(res.data.errMessage || "Đăng ký thất bại!");
+      } else {
+        dispatch(setUser(res.data.user));
+        alert("Đăng ký thành công!");
+        navigate("/home");
+      }
     } catch (err) {
-      alert(err.response?.data?.error || "Lỗi đăng ký");
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message); 
+      } else if (err.message === "Network Error") {
+        setError("Không có kết nối đến máy chủ.");
+      } else {
+        setError("Lỗi hệ thống, vui lòng thử lại sau.");
+      }
+      console.log("Lỗi hệ thống : ", err);
     } finally {
       setLoading(false);
     }
   };
 
-  return { form, loading, handleChange, handleRegister };
+  return { form, loading, error, handleChange, handleRegister };
 };
 
 export default useRegisterViewModel;

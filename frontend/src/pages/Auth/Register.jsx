@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import useRegisterViewModel from "../../viewmodels/useRegisterViewModel.js";
 const Register = () => {
-  const { form, loading, handleChange, handleRegister } =
+  const { form, loading, error, handleChange, handleRegister } =
     useRegisterViewModel();
 
   return (
@@ -18,13 +18,13 @@ const Register = () => {
           </div>
         </div>
 
-        <form className="register-right"onSubmit={handleRegister}>
+        <form className="register-right" onSubmit={handleRegister}>
           <div className="right-content">
             <div className="mainTitle">Register</div>
             <div className="subtitle">It’s free and only takes a minute.</div>
           </div>
 
-          <div className="register-form" >
+          <div className="register-form">
             <InputField
               icon={faUser}
               placeholder="FirstName"
@@ -56,12 +56,12 @@ const Register = () => {
               onChange={handleChange}
             />
           </div>
-
+          {error && <p className="error-message">{error}</p>}
           <div className="group-register-login">
             <div className="existing-account-login">
               Already have an account? <a href="#">Sign in</a>
             </div>
-            <div className="register-btn" disabled={loading}>
+            <div className="register-btn">
               <button type="submit" disabled={loading}>
                 {loading ? "Đang đăng ký..." : "Đăng ký"}
               </button>
