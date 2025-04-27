@@ -1,0 +1,54 @@
+/* Biến màu và font cho toàn dự án */
+:root {
+  --primary-color: #00acc1;
+  --secondary-color: #ffd600;
+  --background-color: #f9f9f9;
+  --text-color: #333333;
+  --border-color: #e0e0e0;
+
+  --font-main: "Arial", sans-serif;
+  --transition-default: all 0.3s ease;
+}
+
+%mainTitle {
+  line-height: 48px;
+  font-weight: bold;
+  font-size: clamp(24px, 2.5vw, 36px);
+}
+
+%subTitle1 {
+  font-size: clamp(18px, 2.5vw, 24px);
+  line-height: 38px;
+  font-weight: 600;
+}
+
+%subTitle2 {
+  font-size: clamp(14px, 2.5vw, 20px);
+  line-height: 38px;
+  font-weight: 600;
+}
+
+%des {
+  font-size: clamp(12px, 2.5vw, 15px);
+  line-height: 27px;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  %mainTitle {
+    line-height: 30px;
+  }
+
+  %subTitle1 {
+    line-height: 25px;
+  }
+
+  %subTitle2 {
+    line-height: 22px;
+    font-weight: 400;
+  }
+
+  %des {
+    line-height: 18px;
+  }
+}

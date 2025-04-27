@@ -1,0 +1,21 @@
+.section2 {
+  .wrapper-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .wrapper-group-boxs {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90%;
+        .box {
+            width: 45%;
+          margin: 10px 10px;
+          max-height: 100px;
+        
+        
+        }
+      }
+  }
+ 
+}

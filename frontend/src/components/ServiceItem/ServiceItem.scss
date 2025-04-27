@@ -1,0 +1,47 @@
+@import "../../styles/variables";
+
+.service-item-container {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  padding: 20px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 25px;
+  background: url(https://bookingcare.vn/_next/static/media/ic_background_grid_item.b108f491.png)
+    center center;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .service-item-icon {
+    padding-left: 10px;
+    width: auto;
+    height: auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      color: #00acc1;
+      font-size: 45px;
+    }
+  }
+  .service-item-name {
+    @extend %subTitle1;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-item-container {
+    .service-item-icon {
+      .icon {
+        font-size: 30px;
+      }
+    }
+  }
+}

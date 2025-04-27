@@ -1,0 +1,51 @@
+@import "../../styles/variables";
+.section-wrapper {
+  width: 100%;
+  margin-bottom: 40px;
+
+  .wrapper-container {
+    width: 100%;
+    margin: 0 auto;
+
+    .wrapper-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 68px 0px 65px;
+      .mainTitle {
+        @extend %subTitle1;
+      }
+
+      .btn-see-more {
+        font-size: 14px;
+        font-weight: 500;
+        color: #00acc1;
+        padding: 6px 12px;
+        background: #e0f7fa;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        button {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          @extend %subTitle2;
+          color: gray;
+        }
+        &:hover {
+          background: #b2ebf2;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .section-wrapper{
+    .wrapper-container{
+      .wrapper-header{
+        margin: 20px 20px 0px 20px;
+      }
+    }
+  }
+   }
+   

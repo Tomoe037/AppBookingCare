@@ -29,7 +29,7 @@ const useRegisterViewModel = () => {
     // console.log("check fiedvalue from usevm :",fieldValue )
     // Tạo một bản sao mới của form
     const updatedForm = {
-      ...form, // giữ nguyên tất cả các giá trị cũ
+      ...form,
       [fieldName]: fieldValue,
     };
     console.log("check updatedFormfrom usevm :", updatedForm);
