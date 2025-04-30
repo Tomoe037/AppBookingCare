@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllcodeByType } from "../../../features/admin/adminThunk";
+import "./UserManager.scss";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 const UserManager = () => {
   const dispatch = useDispatch();
@@ -12,7 +15,21 @@ const UserManager = () => {
     dispatch(fetchAllcodeByType("ROLE"));
     dispatch(fetchAllcodeByType("POSITION"));
   }, [dispatch]);
+  const [previewImgUrl, setPreviewImgUrl] = useState("");
+  // const [selectedImage, setSelectedImage] = useState(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const handleOnchangeImage = (event) => {
+    let data = event.target.files;
+    let file = data[0];
+    // tao mot url de xem anh
 
+    // console.log(" check objectUrl  ", objectUrl )
+    if (file) {
+      let objectUrl = URL.createObjectURL(file);
+      setPreviewImgUrl(objectUrl);
+      // setSelectedImage(file);
+    }
+  };
   return (
     <div className="crud-doctor-container">
       <div className="title">learn react - redux toolkit</div>
@@ -85,7 +102,27 @@ const UserManager = () => {
             </div>
             <div className="col-3">
               <label className="form-label">Image</label>
-              <input type="text" className="form-control" />
+              <div className="preview-img-container">
+                <input
+                  id="previewImg"
+                  type="file"
+                  hidden
+                  onChange={handleOnchangeImage}
+                />
+                <label className="label-uploadImg" htmlFor="previewImg">
+                  UpLoad Image<i className="fas fa-upload"></i>
+                </label>
+                {previewImgUrl && (
+                  <div
+                    className="preview-image"
+                    style={{
+                      backgroundImage: `url(${previewImgUrl})`,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setIsLightboxOpen(true)}
+                  ></div>
+                )}
+              </div>
             </div>
 
             <div className="col-12">
@@ -93,6 +130,15 @@ const UserManager = () => {
                 Save
               </button>
             </div>
+
+            {/* Lightbox hiển thị khi click ảnh */}
+            {isLightboxOpen && (
+              <Lightbox
+                open={isLightboxOpen}
+                close={() => setIsLightboxOpen(false)}
+                slides={[{ src: previewImgUrl }]}
+              />
+            )}
           </div>
         </div>
       </div>
