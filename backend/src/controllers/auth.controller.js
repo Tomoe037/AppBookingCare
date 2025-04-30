@@ -1,7 +1,5 @@
 
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import db from '../models/index.js'; // import default từ index.js Sequelize
+// import default từ index.js Sequelize
 
 import { registerUser } from '../services/auth.service.js';
 

@@ -42,7 +42,7 @@ const registerUser = async (data) => {
       token,
     };
   } catch (error) {
-    await transaction.rollback(); // Rollback nếu có bất kỳ lỗi nào
+    await transaction.rollback(); // Rollback nếu có  lỗi 
     throw error;
   }
 };
