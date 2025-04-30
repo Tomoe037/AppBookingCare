@@ -2,7 +2,7 @@
   width: 100%;
   background-color: #e6fffa;
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   padding: 0px 70px 10px 70px;
 
   .navbar-top {
@@ -25,11 +25,11 @@
     }
 
     .navbar-logo {
-      background: url('https://w.ladicdn.com/67a878f79436c00012e3e9fa/logo-20250427065046-roro-removebg-preview-20250427071455-hmuw6.png') center center no-repeat;
+      background: url("https://w.ladicdn.com/67a878f79436c00012e3e9fa/logo-20250427065046-roro-removebg-preview-20250427071455-hmuw6.png")
+        center center no-repeat;
       background-size: contain;
       height: 40px;
       width: 120px;
-
     }
   }
 
@@ -53,7 +53,7 @@
   }
 
   .navbar-center {
-    width: 100%; 
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -117,27 +117,24 @@
       }
     }
   }
-
 }
 
-
 @media (max-width: 1024px) {
-  .navbar{
+  .navbar {
     padding: 0px 15px 10px 15px;
     .navbar-top {
-      flex-wrap: nowrap; 
+      flex-wrap: nowrap;
       justify-content: space-between;
     }
-  
+
     .navbar-left,
     .navbar-right {
-      flex: 0 0 auto; 
+      flex: 0 0 auto;
     }
-  
+
     .navbar-center {
       margin-top: 15px;
       width: 100%;
     }
   }
- 
 }

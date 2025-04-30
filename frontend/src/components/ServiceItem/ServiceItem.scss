@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use '../../styles/index.scss' as *;
 
 .service-item-container {
   display: flex;

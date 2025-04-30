@@ -5,17 +5,17 @@ import {
   faHandshake,
   faClockRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import "./NavBar.scss";
+import "./Navbar.scss";
 
-const NavBar = () => {
+const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar-top">
-      <div className="navbar-left">
-        <div className="navbar-menu">
-          <FontAwesomeIcon icon={faBars} />
-        </div>
-        <div className="navbar-logo"></div>
+        <div className="navbar-left">
+          <div className="navbar-menu">
+            <FontAwesomeIcon icon={faBars} />
+          </div>
+          <div className="navbar-logo"></div>
         </div>
         <div className="navbar-right">
           <div className="navbar-contact">
@@ -28,38 +28,36 @@ const NavBar = () => {
           </div>
         </div>
       </div>
-     
-        <div className="navbar-center">
-          <div className="navbar-options">
-            <div className="option-item">
-              <div className="name-item">Tất cả</div>
-            </div>
-            <div className="option-item active">
-              <div className="name-item">Tại nhà</div>
-            </div>
-            <div className="option-item">
-              <div className="name-item">Tại viện</div>
-            </div>
-            <div className="option-item">
-              <div className="name-item">Sống khỏe</div>
-            </div>
-          </div>
 
-          <div className="navbar-search">
-            <div className="search-icon">
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </div>
-            <input
-              type="text"
-              placeholder="Tìm bệnh viện"
-              className="search-text"
-            />
+      <div className="navbar-center">
+        <div className="navbar-options">
+          <div className="option-item">
+            <div className="name-item">Tất cả</div>
+          </div>
+          <div className="option-item active">
+            <div className="name-item">Tại nhà</div>
+          </div>
+          <div className="option-item">
+            <div className="name-item">Tại viện</div>
+          </div>
+          <div className="option-item">
+            <div className="name-item">Sống khỏe</div>
           </div>
         </div>
-       
-    
+
+        <div className="navbar-search">
+          <div className="search-icon">
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </div>
+          <input
+            type="text"
+            placeholder="Tìm bệnh viện"
+            className="search-text"
+          />
+        </div>
+      </div>
     </div>
   );
 };
 
-export default NavBar;
+export default Navbar;
