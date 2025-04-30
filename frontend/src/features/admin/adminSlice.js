@@ -1,67 +1,38 @@
-// import { createSlice } from '@reduxjs/toolkit';
-// import { fetchAdminList, addAdmin, deleteAdmin } from './adminThunk';
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchAllcodeByType } from './adminThunk.js';
 
-// const initialState = {
-//   adminList: [],
-//   loading: false,
-//   error: null,
-// };
 
-// const adminSlice = createSlice({
-//   name: 'admin',
-//   initialState,
-//   reducers: {
-//     clearAdminList(state) {
-//       state.adminList = [];
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     // fetchAdminList
-//     builder
-//       .addCase(fetchAdminList.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(fetchAdminList.fulfilled, (state, action) => {
-//         state.adminList = action.payload;
-//         state.loading = false;
-//       })
-//       .addCase(fetchAdminList.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload || 'Lỗi khi lấy danh sách admin';
-//       })
 
-//     // addAdmin
-//       .addCase(addAdmin.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(addAdmin.fulfilled, (state, action) => {
-//         state.adminList.push(action.payload);
-//         state.loading = false;
-//       })
-//       .addCase(addAdmin.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload || 'Lỗi khi thêm admin';
-//       })
+const adminSlice = createSlice({
+  name: 'admin',
+  initialState: {
+    gender: [],
+    role: [],
+    position: [],
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    // sau này thêm logic addUser, updateUser...
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAllcodeByType.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllcodeByType.fulfilled, (state, action) => {
+        const { type, data } = action.payload;
+        state.loading = false;
+        if (type === 'GENDER') state.gender = data;
+        if (type === 'ROLE') state.role = data;
+        if (type === 'POSITION') state.position = data;
+      })
+      .addCase(fetchAllcodeByType.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Lỗi khi tải dữ liệu allcode';
+      });
+  },
+});
 
-//     // deleteAdmin
-//       .addCase(deleteAdmin.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(deleteAdmin.fulfilled, (state, action) => {
-//         state.adminList = state.adminList.filter(
-//           (admin) => admin.id !== action.payload
-//         );
-//         state.loading = false;
-//       })
-//       .addCase(deleteAdmin.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload || 'Lỗi khi xóa admin';
-//       });
-//   },
-// });
-
-// export const { clearAdminList } = adminSlice.actions;
-// export default adminSlice.reducer;
+export default adminSlice.reducer;

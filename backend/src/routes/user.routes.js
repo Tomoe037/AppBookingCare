@@ -1,12 +1,12 @@
-import express from "express";
-import { userController } from '../controllers/index.controller.js';
+// import express from "express";
+// import { userController } from '../controllers/index.controller.js';
 
-const userRouters = express.Router();
-
-
-userRouters.get(
-  "/allcode", userController.getAllCode
-);
+// const userRouters = express.Router();
 
 
-export default userRouters;
+// userRouters.get(
+//   "/allcode", userController.getAllCode
+// );
+
+
+// export default userRouters;
