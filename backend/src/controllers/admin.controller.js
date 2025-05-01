@@ -1,4 +1,4 @@
-import { getAllCodeService } from "../services/admin.service.js";
+import { getAllCodeService ,createUserService} from "../services/admin.service.js";
 
 const getAllCode = async (req, res) => {
     try {
@@ -14,6 +14,25 @@ const getAllCode = async (req, res) => {
     }
   };
 
+  const createUser = async (req, res) => {
+    try {
+      const userData = req.body;
+  
+      const newUser = await createUserService(userData);
+  
+      return res.status(200).json({
+        errCode: 0,
+        message: 'Tạo người dùng thành công!',
+        user: newUser,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        errCode: -1,
+        message: error.message || 'Lỗi server',
+      });
+    }
+  };
+
   export {
-    getAllCode
+    getAllCode,createUser 
   }

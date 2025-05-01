@@ -5,7 +5,12 @@ const getAllcodeByType = async (type) => {
     const res = await axios.get(`${API_URL}/allcode?type=${type}`);
     return res.data.data;
   };
+  const createUser = async (data) => {
+    const res = await axios.post(`${API_URL}/create-user`, data);
+    return res.data;
+  };
+
 
   export  {
-    getAllcodeByType 
+    getAllcodeByType ,createUser,
   }

@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAllcodeByType } from './adminThunk.js';
-
-
+import { fetchAllcodeByType, createNewUser } from './adminThunk.js';
 
 const adminSlice = createSlice({
   name: 'admin',
@@ -11,12 +9,17 @@ const adminSlice = createSlice({
     position: [],
     loading: false,
     error: null,
+    successMessage: null, 
   },
   reducers: {
-    // sau này thêm logic addUser, updateUser...
+    clearAdminMessages(state) {
+      state.successMessage = null;
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
+      // Allcode
       .addCase(fetchAllcodeByType.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -31,8 +34,25 @@ const adminSlice = createSlice({
       .addCase(fetchAllcodeByType.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Lỗi khi tải dữ liệu allcode';
+      })
+
+      // Create user
+      .addCase(createNewUser.pending, (state) => {
+        state.loading = true;
+        state.successMessage = null;
+        state.error = null;
+      })
+      .addCase(createNewUser.fulfilled, (state) => {
+        state.loading = false;
+        state.successMessage = 'Tạo người dùng thành công!';
+      })
+      .addCase(createNewUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
+export const { clearAdminMessages } = adminSlice.actions;
 export default adminSlice.reducer;
+

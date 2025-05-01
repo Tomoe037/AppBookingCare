@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllcodeByType } from './adminService.js';
+import { getAllcodeByType ,createUser} from './adminService.js';
 
  const fetchAllcodeByType = createAsyncThunk(
   'admin/fetchAllcodeByType',
@@ -9,6 +9,18 @@ import { getAllcodeByType } from './adminService.js';
   }
 );
 
+const createNewUser = createAsyncThunk(
+  'admin/createNewUser',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const res = await createUser(formData); // gọi từ service
+      return res;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Tạo user thất bại');
+    }
+  }
+);
+
 export {
-    fetchAllcodeByType,
+    fetchAllcodeByType,createNewUser,
 }
