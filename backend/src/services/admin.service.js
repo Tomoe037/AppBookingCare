@@ -55,4 +55,43 @@ const createUserService = async (data) => {
 
   return newUser;
 };
-export { getAllCodeService, createUserService };
+
+const getAllUsersService = async () => {
+  const users = await db.User.findAll({
+    attributes: ["id", "email", "firstName", "lastName", "address"],
+    order: [["createdAt", "DESC"]],
+  });
+  return users;
+};
+
+const getUserByIdService = async (id) => {
+  const user = await db.User.findByPk(id, {
+    attributes: { exclude: ['password'] },
+  });
+
+  return user;
+};
+
+const updateUserService = async (id, updatedData) => {
+  try {
+    const user = await db.User.findByPk(id);
+    if (!user) {
+      return { errCode: 1, message: "Không tìm thấy người dùng" };
+    }
+
+    delete updatedData.password;
+    delete updatedData.email;
+
+    await user.update(updatedData);
+    return { errCode: 0 };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  getAllCodeService,
+  createUserService,
+  getAllUsersService,getUserByIdService,
+  updateUserService,
+};

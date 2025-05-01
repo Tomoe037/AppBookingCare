@@ -1,4 +1,4 @@
-import { getAllCodeService ,createUserService} from "../services/admin.service.js";
+import { getAllCodeService ,createUserService,getAllUsersService,getUserByIdService,updateUserService} from "../services/admin.service.js";
 
 const getAllCode = async (req, res) => {
     try {
@@ -33,6 +33,53 @@ const getAllCode = async (req, res) => {
     }
   };
 
+  const getAllUsers = async (req, res) => {
+    try {
+      const users = await getAllUsersService();
+      return res.status(200).json({
+        errCode: 0,
+        data: users,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        errCode: -1,
+        message: error.message || 'Lỗi server khi lấy danh sách user',
+      });
+    }
+  };
+
+  const getUserById = async (req, res) => {
+    try {
+      const user = await getUserByIdService(req.params.id);
+  
+      if (!user) {
+        return res.status(404).json({ message: "Không tìm thấy người dùng" });
+      }
+  
+      return res.status(200).json(user);
+    } catch (err) {
+      console.error(" Lỗi tại getUserById:", err);
+      return res.status(500).json({ message: "Lỗi server" });
+    }
+  };
+
+  const updateUser = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const updatedData = req.body;
+      const result = await updateUserService(id, updatedData);
+  
+      if (result.errCode === 0) {
+        return res.status(200).json({ message: 'Cập nhật thành công' });
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (err) {
+      console.error(' Lỗi khi cập nhật user:', err);
+      return res.status(500).json({ message: err.message || 'Lỗi server' });
+    }
+  };
+
   export {
-    getAllCode,createUser 
+    getAllCode,createUser ,getUserById,getAllUsers,updateUser
   }

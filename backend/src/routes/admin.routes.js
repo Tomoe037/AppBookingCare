@@ -1,6 +1,6 @@
 import express from "express";
 import { adminController } from "../controllers/index.controller.js";
-import { validateCreateUser } from "../middlewares/validateInput.middleware.js";
+import { validateCreateUser, validateUpdateUser } from "../middlewares/validateUserFields.middleware.js";
 import checkUserAlreadyExists from "../middlewares/checkUserAlreadyExists.middleware.js";
 
 const adminRouters = express.Router();
@@ -12,5 +12,16 @@ adminRouters.post(
   checkUserAlreadyExists,
   adminController.createUser
 );
-
+adminRouters.get(
+  "/get-users",
+  adminController.getAllUsers
+);
+adminRouters.get(
+  "/user/:id",
+  adminController.getUserById
+);
+adminRouters.put(
+  "/update-user/:id",validateUpdateUser,
+  adminController.updateUser
+);
 export default adminRouters;

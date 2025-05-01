@@ -1,15 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchAllcodeByType, createNewUser } from './adminThunk.js';
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  fetchAllcodeByType,
+  createNewUser,
+  fetchAllUsers,
+  updateUser,
+} from "./adminThunk.js";
 
 const adminSlice = createSlice({
-  name: 'admin',
+  name: "admin",
   initialState: {
     gender: [],
     role: [],
     position: [],
+    userList: [],
     loading: false,
     error: null,
-    successMessage: null, 
+    successMessage: null,
   },
   reducers: {
     clearAdminMessages(state) {
@@ -27,13 +33,13 @@ const adminSlice = createSlice({
       .addCase(fetchAllcodeByType.fulfilled, (state, action) => {
         const { type, data } = action.payload;
         state.loading = false;
-        if (type === 'GENDER') state.gender = data;
-        if (type === 'ROLE') state.role = data;
-        if (type === 'POSITION') state.position = data;
+        if (type === "GENDER") state.gender = data;
+        if (type === "ROLE") state.role = data;
+        if (type === "POSITION") state.position = data;
       })
       .addCase(fetchAllcodeByType.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Lỗi khi tải dữ liệu allcode';
+        state.error = action.error.message || "Lỗi khi tải dữ liệu allcode";
       })
 
       // Create user
@@ -44,9 +50,38 @@ const adminSlice = createSlice({
       })
       .addCase(createNewUser.fulfilled, (state) => {
         state.loading = false;
-        state.successMessage = 'Tạo người dùng thành công!';
+        state.successMessage = "Tạo người dùng thành công!";
       })
       .addCase(createNewUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Fetch all users
+      .addCase(fetchAllUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userList = action.payload;
+      })
+      .addCase(fetchAllUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "Lỗi khi tải danh sách người dùng";
+      })
+      // update user
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.successMessage = null;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state) => {
+        state.loading = false;
+        state.successMessage = "Cập nhật người dùng thành công!";
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
@@ -55,4 +90,3 @@ const adminSlice = createSlice({
 
 export const { clearAdminMessages } = adminSlice.actions;
 export default adminSlice.reducer;
-

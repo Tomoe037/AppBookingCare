@@ -2,20 +2,31 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllcodeByType,
-  createNewUser,
+  createNewUser,updateUser
 } from "../../../features/admin/adminThunk.js";
 import "./UserManager.scss";
-import  useUserManagerViewModel  from "../../../viewmodels/userManagerViewModel.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useCreateUserViewModel } from "../../../viewmodels/useCreateUserViewModel.js";
+import { useUserListViewModel } from "../../../viewmodels/useUserListViewModel.js";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { clearAdminMessages } from "../../../features/admin/adminSlice.js";
 
 const UserManager = () => {
   const dispatch = useDispatch();
-  const { formData, handleInputChange, handleImageChange, resetForm } = useUserManagerViewModel();
+  const { formData, handleInputChange, handleImageChange, resetForm ,handleEditUser,
+    isEditMode,
+    editUserId} =
+    useCreateUserViewModel();
   const { gender, role, position, loading, successMessage, error } =
-  useSelector((state) => state.admin);
-
+    useSelector((state) => state.admin);
+  const {
+    users,
+    loading: loadingUsers,
+    error: userError,
+    // refreshUserList,
+  } = useUserListViewModel();
   useEffect(() => {
     dispatch(fetchAllcodeByType("GENDER"));
     dispatch(fetchAllcodeByType("ROLE"));
@@ -30,17 +41,26 @@ const UserManager = () => {
       return () => clearTimeout(timer);
     }
   }, [successMessage, error, dispatch]);
-  
+
   // const [selectedImage, setSelectedImage] = useState(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   const handleSaveUser = () => {
     console.log("Gửi data form:", formData);
-    dispatch(createNewUser(formData)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        resetForm();
-      }
-    });
+    console.log("ID cập nhật:", editUserId);
+    if (isEditMode) {
+      dispatch(updateUser({ id: editUserId, data: formData })).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          resetForm();
+        }
+      });
+    } else {
+      dispatch(createNewUser(formData)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          resetForm();
+        }
+      });
+    }
   };
 
   return (
@@ -68,6 +88,7 @@ const UserManager = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className="form-control"
+                disabled={isEditMode}
               />
             </div>
             <div className="col-3">
@@ -78,6 +99,7 @@ const UserManager = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 className="form-control"
+                disabled={isEditMode}
               />
             </div>
             <div className="col-3">
@@ -100,7 +122,6 @@ const UserManager = () => {
                 className="form-control"
               />
             </div>
-
             <div className="col-3">
               <label className="form-label">PhoneNumber</label>
               <input
@@ -121,7 +142,6 @@ const UserManager = () => {
                 className="form-control"
               />
             </div>
-
             <div className="col-3">
               <label className="form-label">Gender</label>
               <select
@@ -130,7 +150,6 @@ const UserManager = () => {
                 onChange={handleInputChange}
                 className="form-select"
                 disabled={loading}
-           
               >
                 <option value="">-- Chọn giới tính --</option>
                 {gender.map((g) => (
@@ -145,8 +164,8 @@ const UserManager = () => {
                 Position
               </label>
               <select
-                name="position"
-                value={formData.position}
+                name="positionId"
+                value={formData.positionId}
                 onChange={handleInputChange}
                 className="form-select"
                 disabled={loading}
@@ -161,11 +180,11 @@ const UserManager = () => {
             </div>
             <div className="col-3">
               <label for="inputState" className="form-label">
-                RoleID
+                role
               </label>
               <select
-                name="role"
-                value={formData.role}
+                name="roleId"
+                value={formData.roleId}
                 onChange={handleInputChange}
                 className="form-select"
                 disabled={loading}
@@ -184,7 +203,6 @@ const UserManager = () => {
                 <input
                   id="previewImg"
                   type="file"
-            
                   hidden
                   onChange={handleImageChange}
                 />
@@ -202,7 +220,6 @@ const UserManager = () => {
                 )}
               </div>
             </div>
-
             <div className="col-12">
               <button
                 type="submit"
@@ -213,7 +230,6 @@ const UserManager = () => {
                 {loading ? "Đang lưu..." : "Save"}
               </button>
             </div>
-
             {/* Lightbox hiển thị khi click ảnh */}
             {isLightboxOpen && (
               <Lightbox
@@ -222,6 +238,61 @@ const UserManager = () => {
                 slides={[{ src: formData.previewImgUrl }]}
               />
             )}
+            {/* table view */}
+            {userError && (
+              <div className="alert alert-danger" role="alert">
+                {userError}
+              </div>
+            )}
+            <div className="col-12">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">FirstName</th>
+                    <th scope="col">LastName</th>
+                    <th scope="col">Address</th>
+
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loadingUsers && (
+                    <tr>
+                      <td colSpan="5" className="text-center">
+                        Đang tải danh sách...
+                      </td>
+                    </tr>
+                  )}
+
+                  {!loadingUsers && users.length === 0 && (
+                    <tr>
+                      <td colSpan="5" className="text-center">
+                        Không có người dùng nào.
+                      </td>
+                    </tr>
+                  )}
+
+                  {!loadingUsers &&
+                    users.map((user) => (
+                      <tr key={user.id}>
+                        <td>{user.email}</td>
+                        <td>{user.firstName}</td>
+                        <td>{user.lastName}</td>
+                        <td>{user.address}</td>
+                        <td>
+                          <div className="btn-edit-user" onClick={() => handleEditUser(user.id)}>
+                            <FontAwesomeIcon icon={faPencil} />
+                          </div>
+                          <div className="btn-delete-user">
+                            <FontAwesomeIcon icon={faTrash} />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

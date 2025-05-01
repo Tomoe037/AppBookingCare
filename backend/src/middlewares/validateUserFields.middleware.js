@@ -1,21 +1,24 @@
-const validateCreateUser = (req, res, next) => {
+
+
+const validateUserFields = (checkPassword = true) => {
+  return (req, res, next) => {
     const {
       email,
       password,
       firstName,
       lastName,
       gender,
-      position,
-      role
+      positionId,
+      roleId,
     } = req.body;
-  
+
     if (
       !email ||
-      !password ||
+      (checkPassword && !password) ||
       !firstName ||
       !lastName ||
       !gender ||
-      !role
+      !roleId
     ) {
       return res.status(400).json({
         errCode: 1,
@@ -23,18 +26,15 @@ const validateCreateUser = (req, res, next) => {
       });
     }
 
-    if (role === 'R2' && !position) {
+    if (roleId === 'R2' && !positionId) {
       return res.status(400).json({
         errCode: 2,
-        message: 'Bác sĩ phải chọn chức vụ (position).',
+        message: 'Bác sĩ phải chọn chức vụ (positionId).',
       });
     }
-  
- 
     next();
   };
+};
 
-  export {
-    validateCreateUser 
-  }
-  
+export const validateCreateUser = validateUserFields(true);  
+export const validateUpdateUser = validateUserFields(false); 
