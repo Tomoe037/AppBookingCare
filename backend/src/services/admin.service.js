@@ -33,8 +33,8 @@ const createUserService = async (data) => {
     phoneNumber,
     address,
     gender,
-    position,
-    role,
+    positionId,
+    roleId,
     image,
   } = data;
 
@@ -48,8 +48,8 @@ const createUserService = async (data) => {
     phoneNumber: phoneNumber,
     address: address,
     gender: gender,
-    positionId: position,
-    roleId: role,
+    positionId:  positionId,
+    roleId: roleId,
     avatar: image || null,
   });
 
@@ -89,9 +89,23 @@ const updateUserService = async (id, updatedData) => {
   }
 };
 
+const deleteUserService = async (id) => {
+  try {
+    const user = await db.User.findByPk(id);
+    if (!user) {
+      return { errCode: 1, message: 'Không tìm thấy người dùng' };
+    }
+
+    await user.destroy();
+    return { errCode: 0 };
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getAllCodeService,
   createUserService,
   getAllUsersService,getUserByIdService,
-  updateUserService,
+  updateUserService,deleteUserService,
 };

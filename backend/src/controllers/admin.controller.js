@@ -1,4 +1,4 @@
-import { getAllCodeService ,createUserService,getAllUsersService,getUserByIdService,updateUserService} from "../services/admin.service.js";
+import { getAllCodeService ,createUserService,getAllUsersService,getUserByIdService,updateUserService,deleteUserService} from "../services/admin.service.js";
 
 const getAllCode = async (req, res) => {
     try {
@@ -20,11 +20,7 @@ const getAllCode = async (req, res) => {
   
       const newUser = await createUserService(userData);
   
-      return res.status(200).json({
-        errCode: 0,
-        message: 'Tạo người dùng thành công!',
-        user: newUser,
-      });
+      return res.status(200).json(newUser);
     } catch (error) {
       return res.status(500).json({
         errCode: -1,
@@ -80,6 +76,22 @@ const getAllCode = async (req, res) => {
     }
   };
 
+  const deleteUser = async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const result = await deleteUserService(userId);
+  
+      if (result.errCode === 0) {
+        return res.status(200).json({ message: 'Xoá người dùng thành công' });
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (error) {
+      console.error("❌ Lỗi tại deleteUser:", error);
+      return res.status(500).json({ message: 'Lỗi server' });
+    }
+  };
+
   export {
-    getAllCode,createUser ,getUserById,getAllUsers,updateUser
+    getAllCode,createUser ,getUserById,getAllUsers,updateUser,deleteUser
   }

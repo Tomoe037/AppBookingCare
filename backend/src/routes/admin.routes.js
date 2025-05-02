@@ -24,4 +24,8 @@ adminRouters.put(
   "/update-user/:id",validateUpdateUser,
   adminController.updateUser
 );
+adminRouters.delete(
+  "/delete-user/:id",
+  adminController.deleteUser
+);
 export default adminRouters;

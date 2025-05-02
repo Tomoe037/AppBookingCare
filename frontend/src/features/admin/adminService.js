@@ -21,7 +21,12 @@ const getAllcodeByType = async (type) => {
     const res = await axios.put(`${API_URL}/update-user/${id}`, data);
     return res.data;
   };
+  const deleteUserById = async (id) => {
+    const res = await axios.delete(`${API_URL}/delete-user/${id}`);
+    return res.data;
+  };
+  
   
   export  {
-    getAllcodeByType ,createUser,getAllUsers,updateUserService,getUserById
+    getAllcodeByType ,createUser,getAllUsers,updateUserService,getUserById,deleteUserById
   }

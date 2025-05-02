@@ -3,7 +3,7 @@ import {
   fetchAllcodeByType,
   createNewUser,
   fetchAllUsers,
-  updateUser,
+  updateUser,deleteUser
 } from "./adminThunk.js";
 
 const adminSlice = createSlice({
@@ -48,9 +48,10 @@ const adminSlice = createSlice({
         state.successMessage = null;
         state.error = null;
       })
-      .addCase(createNewUser.fulfilled, (state) => {
+      .addCase(createNewUser.fulfilled, (state, action) => {
         state.loading = false;
         state.successMessage = "Tạo người dùng thành công!";
+        state.userList.unshift(action.payload);
       })
       .addCase(createNewUser.rejected, (state, action) => {
         state.loading = false;
@@ -84,7 +85,21 @@ const adminSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      //delete-user
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.successMessage = 'Xoá người dùng thành công';
+        state.userList = state.userList.filter((u) => u.id !== action.payload);
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

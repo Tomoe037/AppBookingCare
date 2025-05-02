@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllcodeByType ,createUser,getAllUsers,updateUserService,getUserById} from './adminService.js';
+import { getAllcodeByType ,createUser,getAllUsers,updateUserService,getUserById,deleteUserById} from './adminService.js';
 
  const fetchAllcodeByType = createAsyncThunk(
   'admin/fetchAllcodeByType',
@@ -13,7 +13,7 @@ const createNewUser = createAsyncThunk(
   'admin/createNewUser',
   async (formData, { rejectWithValue }) => {
     try {
-      const res = await createUser(formData); // gọi từ service
+      const res = await createUser(formData); 
       return res;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Tạo user thất bại');
@@ -53,6 +53,19 @@ const updateUser = createAsyncThunk(
   }
 );
 
+const deleteUser = createAsyncThunk(
+  'admin/deleteUser',
+  async (id, thunkAPI) => {
+    try {
+      await deleteUserById(id);
+      return id; 
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message || 'Lỗi khi xoá người dùng');
+    }
+  }
+);
+
+
 export {
-    fetchAllcodeByType,createNewUser,fetchAllUsers,updateUser,fetchUserById
+    fetchAllcodeByType,createNewUser,fetchAllUsers,updateUser,fetchUserById,deleteUser
 }

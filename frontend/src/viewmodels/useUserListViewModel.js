@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllUsers } from "../features/admin/adminThunk.js";
+import { fetchAllUsers ,deleteUser} from "../features/admin/adminThunk.js";
 
 const useUserListViewModel = () => {
   const dispatch = useDispatch();
@@ -15,12 +15,18 @@ const useUserListViewModel = () => {
   const refreshUserList = () => {
     dispatch(fetchAllUsers());
   };
+  const handleDeleteUser = async (id) => {
+    if (window.confirm('Bạn có chắc chắn muốn xoá người dùng này?')) {
+      dispatch(deleteUser(id));
+    }
+  };
 
   return {
     users,
     loading,
     error,
     refreshUserList,
+    handleDeleteUser,
   };
 };
 

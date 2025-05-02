@@ -23,6 +23,7 @@ const UserManager = () => {
     useSelector((state) => state.admin);
   const {
     users,
+    handleDeleteUser,
     loading: loadingUsers,
     error: userError,
     // refreshUserList,
@@ -284,7 +285,7 @@ const UserManager = () => {
                           <div className="btn-edit-user" onClick={() => handleEditUser(user.id)}>
                             <FontAwesomeIcon icon={faPencil} />
                           </div>
-                          <div className="btn-delete-user">
+                          <div className="btn-delete-user" onClick={() => handleDeleteUser(user.id)}>
                             <FontAwesomeIcon icon={faTrash} />
                           </div>
                         </td>
