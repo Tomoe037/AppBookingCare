@@ -22,20 +22,23 @@ const sequelize = config.use_env_variable
 
 const db = { sequelize, Sequelize, DataTypes };
 
-const modelsPath = path.resolve(__dirname); 
+const modelsPath = path.resolve(__dirname);
 
-fs.readdirSync(modelsPath)
-  .filter((file) => file !== "index.js" && file.endsWith(".js"))
-  .forEach(async (file) => {
-    const modelModule = await import(`file://${path.join(modelsPath, file)}`);
-    const model = modelModule.default(sequelize, DataTypes);
-    db[model.name] = model;
-  });
+const modelFiles = fs
+  .readdirSync(modelsPath)
+  .filter((file) => file !== "index.js" && file.endsWith(".js"));
+// Duyệt lần lượt và chờ import từng model
+for (const file of modelFiles) {
+  const modelModule = await import(`file://${path.join(modelsPath, file)}`);
+  const model = modelModule.default(sequelize, DataTypes);
+  db[model.name] = model;
+}
 
-Object.keys(db).forEach((modelName) => {
+// Gọi associate sau khi tất cả model đã được gán vào db
+for (const modelName of Object.keys(db)) {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
-});
+}
 
 export default db;

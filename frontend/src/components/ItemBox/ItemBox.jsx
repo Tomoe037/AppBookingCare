@@ -6,7 +6,7 @@ const ItemBox = (props) => {
     subtitle,
     description,
     imageShape = "square",
-    hasDescription = false
+    hasDescription = false,
   } = props;
 
   return (
@@ -15,10 +15,11 @@ const ItemBox = (props) => {
         <div className="box-img-container">
           <div
             className={`box-img ${imageShape}`}
-            style={{ backgroundImage: `url(${image})` }}
+            style={{ backgroundImage: image ? `url(${image})` : "none" }}
+          
           />
         </div>
-
+        {console.log("🖼️ Image trong ItemBox:", image)}
         <div className="box-subTitle">{subtitle}</div>
 
         {hasDescription && description && (

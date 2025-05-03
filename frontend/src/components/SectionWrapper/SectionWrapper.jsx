@@ -1,19 +1,21 @@
 import React from "react";
-import ItemBox from "../ItemBox/ItemBox";
-import Slider from "../Slider/Slider";
+
+import Slider from "../Slider/Slider.jsx";
 import ServiceItem from "../ServiceItem/ServiceItem"
 import "./SectionWrapper.scss"; // giả sử bạn có scss riêng
 
 const SectionWrapper = (props) => {
-  const { isSlider, items = [] } = props;
+  const { isSlider, items = [], title = "Tiêu đề Section", 
+    buttonText = "Xem thêm",  
+    onButtonClick,  } = props;
 
   return (
     <div className="section-wrapper">
       <div className="wrapper-container">
         <div className="wrapper-header">
-          <div className="mainTitle">Tiêu đề Section</div>
+          <div className="mainTitle">{title}</div>
           <div className="btn-see-more">
-            <button>Xem thêm</button>
+            <button onClick={onButtonClick}>{buttonText}</button>
           </div>
         </div>
 

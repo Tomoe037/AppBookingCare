@@ -1,19 +1,21 @@
-// import { getAllCodeService } from "../services/user.service.js";
+import { getTopDocTorHomeService } from "../services/user.service.js";
 
-// const getAllCode = async (req, res) => {
-//     try {
-//       let data = await getAllCodeService(req.query.type);
-//        console.log(">>> query:", req.query);
-//       return res.status(200).json(data);
-//     } catch (e) {
-//       console.log("get all code err ", e);
-//       return res.status(200).json({
-//         errCode: -1,
-//         errMessage: "err from server",
-//       });
-//     }
-//   };
+const getTopDocTorHome = async (req, res) => {
+  let limit = parseInt(req.query.limit) || 10;
+  try {
+    let doctors = await getTopDocTorHomeService(limit);
+    return res.status(200).json({
+      errCode: 0,
+      message: "OK",
+      data: doctors,
+    });
+  } catch (e) {
+    console.error("❌ Lỗi getTopDocTorHome:", e);
+    return res.status(500).json({
+      errCode: -1,
+      message: "Lỗi từ server (getTopDocTorHome)",
+    });
+  }
+};
 
-//   export {
-//     getAllCode
-//   }
+export { getTopDocTorHome };

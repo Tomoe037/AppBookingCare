@@ -1,18 +1,29 @@
-import SectionWrapper from "../../../components/SectionWrapper/SectionWrapper";
+import SectionWrapper from "../../../components/SectionWrapper/SectionWrapper.jsx";
+import { useTopDoctors } from "../../../viewmodels/useHomeViewModel";
+
 const Section4 = () => {
-  const groupItems = [
-    { image: "https://cdn.bookingcare.vn/fo/w384/2024/03/17/195721-ban-da-hieu-ve-tiem-meso.jpg", subtitle: "Hỏi bác sĩ miễn phí"},
-    { image: "https://cdn.bookingcare.vn/fo/w384/2024/03/17/195721-ban-da-hieu-ve-tiem-meso.jpg", subtitle: "Hỏi bác sĩ miễn phí"},
-    { image: "https://cdn.bookingcare.vn/fo/w384/2024/03/17/195721-ban-da-hieu-ve-tiem-meso.jpg", subtitle: "Hỏi bác sĩ miễn phí 3" },
-    { image: "https://cdn.bookingcare.vn/fo/w384/2024/03/17/195721-ban-da-hieu-ve-tiem-meso.jpg", subtitle: "Hỏi bác sĩ miễn phí 3" },
-    { image: "https://cdn.bookingcare.vn/fo/w384/2024/03/17/195721-ban-da-hieu-ve-tiem-meso.jpg", subtitle: "Hỏi bác sĩ miễn phí 3" },
-    { image: "https://cdn.bookingcare.vn/fo/w384/2024/03/17/195721-ban-da-hieu-ve-tiem-meso.jpg", subtitle: "Hỏi bác sĩ miễn phí 3" },
-    { image: "https://cdn.bookingcare.vn/fo/w384/2024/03/17/195721-ban-da-hieu-ve-tiem-meso.jpg", subtitle: "Hỏi bác sĩ miễn phí 3" },
-  ];
+  const { topDoctors, loadingTopDoctors } = useTopDoctors();
+
+  const groupItems = topDoctors.map((doctor) => ({
+    image: doctor.image,
+    subtitle: `${doctor.positionData?.valueVi || ""} ${
+      doctor.firstName || ""
+    } ${doctor.lastName || ""}`.trim(),
+    description: "Cơ xương khớp",
+    hasDescription: true,
+  }));
+
   return (
     <div className="section4">
-     <SectionWrapper isSlider={true} items={groupItems} />
+      <SectionWrapper
+        title="Top Bác sĩ nổi bật"
+        buttonText="Xem Thêm"
+        isSlider={true}
+        items={groupItems}
+        loading={loadingTopDoctors}
+      />
     </div>
   );
 };
+
 export default Section4;

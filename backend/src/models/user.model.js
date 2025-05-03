@@ -5,6 +5,16 @@ export default (sequelize) => {
   class User extends Model {
     static associate(models) {
       // associate de dinh danh cac moi quan he
+      User.belongsTo(models.Allcode, {
+        foreignKey: "positionId",
+        targetKey: "keyMap",
+        as: "positionData",
+      });
+      User.belongsTo(models.Allcode, {
+        foreignKey: "gender",
+        targetKey: "keyMap",
+        as: "genderData",
+      });
     }
   }
 
@@ -20,9 +30,6 @@ export default (sequelize) => {
       image: DataTypes.STRING,
       roleId: DataTypes.STRING,
       positionId: DataTypes.STRING,
-
-
-
     },
     {
       sequelize,

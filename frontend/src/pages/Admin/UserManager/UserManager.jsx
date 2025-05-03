@@ -154,7 +154,7 @@ const UserManager = () => {
               >
                 <option value="">-- Chọn giới tính --</option>
                 {gender.map((g) => (
-                  <option key={g.key} value={g.key}>
+                  <option key={g.keyMap} value={g.keyMap}>
                     {g.valueVi}
                   </option>
                 ))}
@@ -173,7 +173,7 @@ const UserManager = () => {
               >
                 <option value="">-- Chọn chức vụ --</option>
                 {position.map((p) => (
-                  <option key={p.key} value={p.key}>
+                  <option key={p.keyMap} value={p.keyMap}>
                     {p.valueVi}
                   </option>
                 ))}
@@ -192,7 +192,7 @@ const UserManager = () => {
               >
                 <option value="">-- Chọn vai trò --</option>
                 {role.map((r) => (
-                  <option key={r.key} value={r.key}>
+                  <option key={r.keyMap} value={r.keyMap}>
                     {r.valueVi}
                   </option>
                 ))}
