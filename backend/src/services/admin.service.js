@@ -50,7 +50,7 @@ const createUserService = async (data) => {
     gender: gender,
     positionId:  positionId,
     roleId: roleId,
-    avatar: image || null,
+    image: image || null,
   });
 
   return newUser;

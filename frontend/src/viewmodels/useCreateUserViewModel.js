@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { fetchUserById } from "../features/admin/adminThunk.js";
 import { useDispatch } from "react-redux";
+import { getBase64 } from "../utils/readFileImage.js";
+import { Buffer } from 'buffer';
+
 const useCreateUserViewModel = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -12,7 +15,7 @@ const useCreateUserViewModel = () => {
     gender: "",
     positionId: "",
     roleId: "",
-    image: null,
+    image: "",
     previewImgUrl: "",
   });
   const [isEditMode, setIsEditMode] = useState(false);
@@ -27,21 +30,30 @@ const useCreateUserViewModel = () => {
     }));
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
+      const base64 = await getBase64(file);
+      // console.log("check base64 ",base64)
       const objectUrl = URL.createObjectURL(file);
       setFormData((prevData) => ({
         ...prevData,
-        image: file,
+        image: base64,
         previewImgUrl: objectUrl,
       }));
     }
   };
 
   const setForm = (user) => {
+    let imageBase64 = ''
+    if(user.image){
+   imageBase64 = Buffer.from(user.image, 'base64').toString('binary');
+
+     
+    }
     setFormData({
+    
       email: user.email || "",
       password: "",
       firstName: user.firstName || "",
@@ -49,13 +61,14 @@ const useCreateUserViewModel = () => {
       phoneNumber: user.phoneNumber || "",
       address: user.address || "",
       gender: user.gender || "",
-      positionId: user.positionId || '',
-      roleId: user.roleId || '',
-      image: null,
-      previewImgUrl: "",
+      positionId: user.positionId || "",
+      roleId: user.roleId || "",
+      image: user.image,
+      previewImgUrl: imageBase64,
     });
     setIsEditMode(true);
     setEditUserId(user.id);
+    console.log("Preview URL khi setForm:", imageBase64);
   };
 
   const resetForm = () => {
@@ -69,7 +82,7 @@ const useCreateUserViewModel = () => {
       gender: "",
       positionId: "",
       roleId: "",
-      image: null,
+      image: "",
       previewImgUrl: "",
     });
     setIsEditMode(false);

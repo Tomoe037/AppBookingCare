@@ -206,6 +206,7 @@ const UserManager = () => {
                   type="file"
                   hidden
                   onChange={handleImageChange}
+                  disabled={loading}
                 />
                 <label className="label-uploadImg" htmlFor="previewImg">
                   UpLoad Image<i className="fas fa-upload"></i>

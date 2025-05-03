@@ -20,10 +20,10 @@ app.use(
 
 
 // Cấu hình body-parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit:'50mb'}));
+app.use(bodyParser.urlencoded({limit:'50mb', extended: true }));
 
-// Cấu hình view engine (nếu dùng)
+// Cấu hình view engine
 configViewEngine(app);
 
 // Khai báo route
