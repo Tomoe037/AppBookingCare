@@ -1,0 +1,14 @@
+.more-info-doctor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .content-right {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+  }
+  .content-left{
+    width: 40%;
+
+  }
+}

@@ -4,6 +4,7 @@ import Register from "../pages/Auth/Register";
 import DefaultLayout from "../layouts/DefaultLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import HomeAdmin from "../pages/Admin/HomeAdmin/HomeAdmin";
+import DoctorManager from "../pages/Admin/Doctor/DoctorManager";
 
 const AppRouter = () => {
   return (
@@ -15,6 +16,7 @@ const AppRouter = () => {
         </Route>
          <Route element={<AdminLayout />}>
           <Route path="/admin" element={<HomeAdmin />} />
+          <Route path="/admin/doctor-manager" element={<DoctorManager/>} />
         
         </Route>
 

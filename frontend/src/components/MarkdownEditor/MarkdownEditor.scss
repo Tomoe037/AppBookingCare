@@ -1,0 +1,31 @@
+.markdown-container {
+  display: flex;
+  height: 500px;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: auto;
+  .markdown-edit-container {
+    width: 50%;
+    height: 100%;
+  }
+  .markdown-preview-container {
+    height: 100%;
+    width: 50%;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    .markdown-preview {
+      padding: 20px;
+    }
+  }
+  .save-content-markdown{
+    margin-top: 20px;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    padding: 5px;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+  }
+}
