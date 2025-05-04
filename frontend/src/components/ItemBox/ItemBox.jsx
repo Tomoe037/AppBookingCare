@@ -7,10 +7,11 @@ const ItemBox = (props) => {
     description,
     imageShape = "square",
     hasDescription = false,
+    onClick 
   } = props;
 
   return (
-    <div className="itembox">
+    <div className="itembox"  onClick={onClick}>
       <div className="itembox-container">
         <div className="box-img-container">
           <div
@@ -19,7 +20,7 @@ const ItemBox = (props) => {
           
           />
         </div>
-        {console.log("🖼️ Image trong ItemBox:", image)}
+  
         <div className="box-subTitle">{subtitle}</div>
 
         {hasDescription && description && (

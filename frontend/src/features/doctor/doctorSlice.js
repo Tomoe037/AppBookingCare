@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { saveDoctorInfoThunk, fetchAllDoctorsThunk,fetchDoctorDetailThunk } from "./doctorThunk.js";
+import {
+  saveDoctorInfoThunk,
+  fetchAllDoctorsThunk,
+  fetchDoctorDetailThunk,
+} from "./doctorThunk.js";
 
 const initialState = {
   selectedDoctor: null,
@@ -19,9 +23,8 @@ const initialState = {
     hasData: false,
     loading: false,
     error: null,
-    loaded: false
+    loaded: false,
   },
-  
 };
 
 const doctorSlice = createSlice({
@@ -47,7 +50,6 @@ const doctorSlice = createSlice({
       state.doctorDescription = "";
       state.success = false;
     },
-  
   },
   extraReducers: (builder) => {
     builder
@@ -66,7 +68,7 @@ const doctorSlice = createSlice({
       .addCase(saveDoctorInfoThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
-     
+
         state.success = false;
       })
       .addCase(saveDoctorInfoThunk.fulfilled, (state) => {
@@ -77,7 +79,6 @@ const doctorSlice = createSlice({
         state.loading = false;
         state.success = false;
         state.error = action.payload || action.error.message;
-     
       })
       .addCase(fetchDoctorDetailThunk.pending, (state) => {
         state.doctorDetail.loading = true;
@@ -91,6 +92,10 @@ const doctorSlice = createSlice({
           state.contentMarkdown = action.payload.data.contentMarkdown;
           state.contentHTML = action.payload.data.contentHTML;
           state.doctorDescription = action.payload.data.description;
+          state.doctorDetail.firstName = action.payload.data.firstName;
+          state.doctorDetail.lastName = action.payload.data.lastName;
+          state.doctorDetail.position = action.payload.data.position;
+          state.doctorDetail.image = action.payload.data.image;
         } else {
           state.doctorDetail.hasData = false;
           state.contentMarkdown = "";
@@ -101,7 +106,7 @@ const doctorSlice = createSlice({
       .addCase(fetchDoctorDetailThunk.rejected, (state, action) => {
         state.doctorDetail.loading = false;
         state.doctorDetail.error = action.payload || action.error.message;
-      })
+      });
   },
 });
 
@@ -109,6 +114,7 @@ export const {
   setSelectedDoctor,
   setContentMarkdown,
   setContentHTML,
-  setDoctorDescription,  resetForm,  
+  setDoctorDescription,
+  resetForm,
 } = doctorSlice.actions;
 export default doctorSlice.reducer;

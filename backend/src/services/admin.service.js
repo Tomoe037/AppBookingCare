@@ -211,8 +211,15 @@ const getDoctorInfoService = async (doctorId) => {
     // Kiểm tra tồn tại bác sĩ
     const doctor = await db.User.findOne({
       where: { id: doctorId, roleId: "R2" },
+      include: [
+        {
+          model: db.Allcode,
+          as: "positionData",
+          attributes: ["valueVi"],
+        },
+      ],
+      attributes: ["id", "firstName", "lastName", "image", "positionId"],
     });
-
     if (!doctor) {
       return {
         status: 404,
@@ -226,6 +233,7 @@ const getDoctorInfoService = async (doctorId) => {
     // Tìm bài viết Markdown
     const markdown = await db.Markdown.findOne({
       where: { doctorId },
+      attributes: ["contentMarkdown", "contentHTML", "description"],
     });
 
     if (!markdown) {
@@ -234,6 +242,12 @@ const getDoctorInfoService = async (doctorId) => {
         body: {
           success: true,
           hasData: false,
+          data: {
+            firstName: doctor.firstName,
+            lastName: doctor.lastName,
+            image: doctor.image,
+            position: doctor.positionData?.valueVi || "", 
+          },
           message: "Bác sĩ chưa có bài viết nào.",
         },
       };
@@ -245,9 +259,13 @@ const getDoctorInfoService = async (doctorId) => {
         success: true,
         hasData: true,
         data: {
+          firstName: doctor.firstName,
+          lastName: doctor.lastName,
+          image: doctor.image,
+          description: markdown.description,
           contentMarkdown: markdown.contentMarkdown,
           contentHTML: markdown.contentHTML,
-          description: markdown.description,
+          position: doctor.positionData?.valueVi || "",
         },
       },
     };

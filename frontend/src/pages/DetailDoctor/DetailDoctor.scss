@@ -1,0 +1,48 @@
+.doctor-detail-container{
+    padding: 20px;
+    .intro-doctor {
+        display: flex;
+        align-items: flex-start;
+        gap: 30px;
+        margin-top: 30px;
+      
+        .intro-content-left {
+            .image{
+                border-radius: 50%;
+                border: 1px solid gray;
+                overflow: hidden;
+                .image-doctor {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 8px;
+                    object-fit: cover;
+                  }
+            }
+          
+        }
+      
+        .intro-content-right {
+          flex: 1;
+      
+          .name-doctor {
+            font-weight: bold;
+        }
+          .bio-doctor {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+          }
+        }
+      }
+
+      .detail-info-doctor {
+        margin-top: 20px;
+        font-size: 15px;
+        line-height: 1.7;
+        background-color: rgb(249 249 249/var(--tw-bg-opacity,1));
+        padding: 30px;
+      }
+}
+
+
+  

@@ -7,7 +7,7 @@ import "./SectionWrapper.scss"; // giả sử bạn có scss riêng
 const SectionWrapper = (props) => {
   const { isSlider, items = [], title = "Tiêu đề Section", 
     buttonText = "Xem thêm",  
-    onButtonClick,  } = props;
+    onButtonClick,onClickItem  } = props;
 
   return (
     <div className="section-wrapper">
@@ -22,7 +22,7 @@ const SectionWrapper = (props) => {
         <div className="wrapper-content">
           {isSlider ? (
             // Nếu isSlider = true => Hiển thị Slider
-            <Slider items={items} />
+            <Slider items={items} onClickItem={onClickItem}/>
           ) : (
             // Nếu isSlider = false => Hiển thị ServiceItem
             <div className="wrapper-group-boxs">

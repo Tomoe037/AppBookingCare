@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import ItemBox from "../ItemBox/ItemBox";
 import "./Slider.scss";
 
-const Slider = ({ items = [] }) => {
+const Slider = ({ items = [],onClickItem }) => {
   const swiperRef = useRef(null);
 
   const handleNext = () => {
@@ -48,6 +48,7 @@ const Slider = ({ items = [] }) => {
                 description={item.description}
                 hasDescription={item.hasDescription}
                 imageShape={item.imageShape}
+                onClick={() => onClickItem(item)} 
               />
             </SwiperSlide>
           ))}
