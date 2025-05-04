@@ -1,7 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { saveDoctorInfoAPI } from "./doctorService.js";
+import { saveDoctorInfoAPI, getAllDoctorsAPI } from "./doctorService.js";
 
-export const saveDoctorInfoThunk = createAsyncThunk(
+const fetchAllDoctorsThunk = createAsyncThunk(
+  "doctor/fetchAllDoctors",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await getAllDoctorsAPI();
+      return res.data.map((doc) => ({
+        value: doc.id,
+        label: `${doc.positionData.valueVi} ${doc.firstName} ${doc.lastName}`,
+      }));
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+const saveDoctorInfoThunk = createAsyncThunk(
   "doctor/saveDoctorInfo",
   async (_, { getState, rejectWithValue }) => {
     try {
@@ -11,7 +26,7 @@ export const saveDoctorInfoThunk = createAsyncThunk(
         contentMarkdown: state.doctor.contentMarkdown,
         contentHTML: state.doctor.contentHTML,
         description: state.doctor.doctorDescription,
-        doctorName: state.doctor.selectedDoctor?.label
+        doctorName: state.doctor.selectedDoctor?.label,
       };
       console.log(" Dữ liệu gửi đi saveDoctorInfoThunk :", data);
       const response = await saveDoctorInfoAPI(data);
@@ -21,3 +36,5 @@ export const saveDoctorInfoThunk = createAsyncThunk(
     }
   }
 );
+
+export { saveDoctorInfoThunk, fetchAllDoctorsThunk };

@@ -2,6 +2,7 @@ import express from "express";
 import { adminController } from "../controllers/index.controller.js";
 import { validateCreateUser, validateUpdateUser } from "../middlewares/validateUserFields.middleware.js";
 import checkUserAlreadyExists from "../middlewares/checkUserAlreadyExists.middleware.js";
+import { validateDoctorInput } from "../middlewares/validateDoctorInput.middleware.js"
 
 const adminRouters = express.Router();
 
@@ -33,4 +34,9 @@ adminRouters.get(
   "/get-all-doctors",
   adminController.getAllDoctors
 );
+adminRouters.post(
+  "/save-info-doctor",validateDoctorInput,
+  adminController.saveDoctorInfo
+);
+
 export default adminRouters;

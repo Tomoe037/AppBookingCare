@@ -15,6 +15,12 @@ export default (sequelize) => {
         targetKey: "keyMap",
         as: "genderData",
       });
+
+      // Thêm quan hệ với Markdown
+      User.hasOne(models.Markdown, {
+        foreignKey: "doctorId",
+  
+      });
     }
   }
 

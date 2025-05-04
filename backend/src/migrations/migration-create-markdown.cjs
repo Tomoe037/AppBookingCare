@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      contentHTMl: {
+      contentHTML: {
         allowNull: false,
         type: Sequelize.TEXT("long"),
       },

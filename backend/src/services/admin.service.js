@@ -48,7 +48,7 @@ const createUserService = async (data) => {
     phoneNumber: phoneNumber,
     address: address,
     gender: gender,
-    positionId:  positionId,
+    positionId: positionId,
     roleId: roleId,
     image: image || null,
   });
@@ -66,7 +66,7 @@ const getAllUsersService = async () => {
 
 const getUserByIdService = async (id) => {
   const user = await db.User.findByPk(id, {
-    attributes: { exclude: ['password'] },
+    attributes: { exclude: ["password"] },
   });
 
   return user;
@@ -93,7 +93,7 @@ const deleteUserService = async (id) => {
   try {
     const user = await db.User.findByPk(id);
     if (!user) {
-      return { errCode: 1, message: 'Không tìm thấy người dùng' };
+      return { errCode: 1, message: "Không tìm thấy người dùng" };
     }
 
     await user.destroy();
@@ -113,22 +113,22 @@ const getAllDoctorsService = async () => {
         {
           model: db.Allcode,
           as: "positionData",
-          attributes: ["valueVi"]
+          attributes: ["valueVi"],
         },
         {
           model: db.Allcode,
           as: "genderData",
-          attributes: ["valueVi"]
-        }
-      ]
+          attributes: ["valueVi"],
+        },
+      ],
     });
 
     return {
       status: 200,
       body: {
         success: true,
-        data: doctors
-      }
+        data: doctors,
+      },
     };
   } catch (error) {
     console.error(" Lỗi trong getAllDoctorsService:", error);
@@ -136,8 +136,53 @@ const getAllDoctorsService = async () => {
       status: 500,
       body: {
         success: false,
-        message: "Lỗi server khi lấy danh sách bác sĩ"
-      }
+        message: "Lỗi server khi lấy danh sách bác sĩ",
+      },
+    };
+  }
+};
+
+const saveDoctorInfoService = async (data) => {
+  const { doctorId, contentMarkdown, contentHTML, description } = data;
+
+  try {
+    const doctor = await db.User.findOne({
+      where: { id: doctorId, roleId: "R2" },
+    });
+
+    if (!doctor) {
+      return {
+        status: 404,
+        body: {
+          success: false,
+          message: "Không tìm thấy bác sĩ với ID đã cho.",
+        },
+      };
+    }
+
+    // upsert (tạo mới hoặc cập nhật nếu đã có)
+    await db.Markdown.upsert({
+      doctorId,
+      contentMarkdown,
+      contentHTML,
+      description,
+    });
+
+    return {
+      status: 200,
+      body: {
+        success: true,
+        message: "Lưu thông tin bác sĩ thành công.",
+      },
+    };
+  } catch (err) {
+    console.error("❌ Lỗi khi lưu thông tin bác sĩ:", err);
+    return {
+      status: 500,
+      body: {
+        success: false,
+        message: "Lỗi server khi lưu thông tin bác sĩ.",
+      },
     };
   }
 };
@@ -145,7 +190,10 @@ const getAllDoctorsService = async () => {
 export {
   getAllCodeService,
   createUserService,
-  getAllUsersService,getUserByIdService,
-  updateUserService,deleteUserService,
+  getAllUsersService,
+  getUserByIdService,
+  updateUserService,
+  deleteUserService,
   getAllDoctorsService,
+  saveDoctorInfoService,
 };

@@ -6,6 +6,7 @@ import {
   updateUserService,
   deleteUserService,
   getAllDoctorsService,
+  saveDoctorInfoService
 } from "../services/admin.service.js";
 
 const getAllCode = async (req, res) => {
@@ -106,6 +107,11 @@ const getAllDoctors = async (req, res) => {
   return res.status(result.status).json(result.body);
 };
 
+const saveDoctorInfo = async (req, res) => {
+  const result = await saveDoctorInfoService(req.body);
+  return res.status(result.status).json(result.body);
+};
+
 export {
   getAllCode,
   createUser,
@@ -113,5 +119,5 @@ export {
   getAllUsers,
   updateUser,
   deleteUser,
-  getAllDoctors,
+  getAllDoctors,saveDoctorInfo
 };
