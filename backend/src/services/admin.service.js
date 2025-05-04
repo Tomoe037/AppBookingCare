@@ -103,9 +103,49 @@ const deleteUserService = async (id) => {
   }
 };
 
+// doctor manager service
+const getAllDoctorsService = async () => {
+  try {
+    const doctors = await db.User.findAll({
+      where: { roleId: "R2" },
+      attributes: { exclude: ["password", "image"] },
+      include: [
+        {
+          model: db.Allcode,
+          as: "positionData",
+          attributes: ["valueVi"]
+        },
+        {
+          model: db.Allcode,
+          as: "genderData",
+          attributes: ["valueVi"]
+        }
+      ]
+    });
+
+    return {
+      status: 200,
+      body: {
+        success: true,
+        data: doctors
+      }
+    };
+  } catch (error) {
+    console.error(" Lỗi trong getAllDoctorsService:", error);
+    return {
+      status: 500,
+      body: {
+        success: false,
+        message: "Lỗi server khi lấy danh sách bác sĩ"
+      }
+    };
+  }
+};
+
 export {
   getAllCodeService,
   createUserService,
   getAllUsersService,getUserByIdService,
   updateUserService,deleteUserService,
+  getAllDoctorsService,
 };

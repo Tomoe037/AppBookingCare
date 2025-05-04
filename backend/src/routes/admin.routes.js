@@ -28,4 +28,9 @@ adminRouters.delete(
   "/delete-user/:id",
   adminController.deleteUser
 );
+//doctor manager
+adminRouters.get(
+  "/get-all-doctors",
+  adminController.getAllDoctors
+);
 export default adminRouters;
