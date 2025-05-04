@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { saveDoctorInfoThunk, fetchAllDoctorsThunk } from "./doctorThunk.js";
+import { saveDoctorInfoThunk, fetchAllDoctorsThunk,fetchDoctorDetailThunk } from "./doctorThunk.js";
 
 const initialState = {
   selectedDoctor: null,
@@ -12,6 +12,16 @@ const initialState = {
   listDoctor: [],
   loadingDoctorList: false,
   errorDoctorList: null,
+  doctorDetail: {
+    contentMarkdown: "",
+    contentHTML: "",
+    description: "",
+    hasData: false,
+    loading: false,
+    error: null,
+    loaded: false
+  },
+  
 };
 
 const doctorSlice = createSlice({
@@ -36,7 +46,8 @@ const doctorSlice = createSlice({
       state.contentHTML = "";
       state.doctorDescription = "";
       state.success = false;
-    }
+    },
+  
   },
   extraReducers: (builder) => {
     builder
@@ -67,7 +78,30 @@ const doctorSlice = createSlice({
         state.success = false;
         state.error = action.payload || action.error.message;
      
-      });
+      })
+      .addCase(fetchDoctorDetailThunk.pending, (state) => {
+        state.doctorDetail.loading = true;
+        state.doctorDetail.error = null;
+      })
+      .addCase(fetchDoctorDetailThunk.fulfilled, (state, action) => {
+        state.doctorDetail.loading = false;
+        state.doctorDetail.loaded = true;
+        if (action.payload.hasData) {
+          state.doctorDetail.hasData = true;
+          state.contentMarkdown = action.payload.data.contentMarkdown;
+          state.contentHTML = action.payload.data.contentHTML;
+          state.doctorDescription = action.payload.data.description;
+        } else {
+          state.doctorDetail.hasData = false;
+          state.contentMarkdown = "";
+          state.contentHTML = "";
+          state.doctorDescription = "";
+        }
+      })
+      .addCase(fetchDoctorDetailThunk.rejected, (state, action) => {
+        state.doctorDetail.loading = false;
+        state.doctorDetail.error = action.payload || action.error.message;
+      })
   },
 });
 
@@ -75,6 +109,6 @@ export const {
   setSelectedDoctor,
   setContentMarkdown,
   setContentHTML,
-  setDoctorDescription,  resetForm,
+  setDoctorDescription,  resetForm,  
 } = doctorSlice.actions;
 export default doctorSlice.reducer;

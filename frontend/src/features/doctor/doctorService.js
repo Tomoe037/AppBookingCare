@@ -10,7 +10,11 @@ const getAllDoctorsAPI = async () => {
   const res = await axios.post(`${API_URL}/save-info-doctor`, data);
   return res.data;
 };
+const getDoctorDetailAPI = async (doctorId) => {
+  const res = await axios.get(`${API_URL}/get-doctor-info/${doctorId}`);
+  return res.data;
+};
 
 export{
-  saveDoctorInfoAPI,getAllDoctorsAPI
+  saveDoctorInfoAPI,getAllDoctorsAPI,getDoctorDetailAPI
 }

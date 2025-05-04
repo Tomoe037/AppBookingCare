@@ -30,6 +30,7 @@ const DoctorManager = () => {
       resetDoctorForm(); // ✅ gọi hàm reset từ ViewModel
     }
   }, [success, resetDoctorForm]);
+  
   return (
     <div className="doctor-manager-container">
       <div className="doctor-manager-title">Tạo Thêm Thông tin doctor</div>

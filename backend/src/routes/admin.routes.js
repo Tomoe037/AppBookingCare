@@ -38,5 +38,13 @@ adminRouters.post(
   "/save-info-doctor",validateDoctorInput,
   adminController.saveDoctorInfo
 );
+adminRouters.post(
+  "/save-info-doctor",validateDoctorInput,
+  adminController.saveDoctorInfo
+);
+adminRouters.get(
+  "/get-doctor-info/:doctorId",
+  adminController.getDoctorInfo
+);
 
 export default adminRouters;

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { saveDoctorInfoAPI, getAllDoctorsAPI } from "./doctorService.js";
+import { saveDoctorInfoAPI, getAllDoctorsAPI,getDoctorDetailAPI } from "./doctorService.js";
 
 const fetchAllDoctorsThunk = createAsyncThunk(
   "doctor/fetchAllDoctors",
@@ -36,5 +36,15 @@ const saveDoctorInfoThunk = createAsyncThunk(
     }
   }
 );
-
-export { saveDoctorInfoThunk, fetchAllDoctorsThunk };
+const fetchDoctorDetailThunk = createAsyncThunk(
+  "doctor/fetchDoctorDetail",
+  async (doctorId, { rejectWithValue }) => {
+    try {
+      const res = await getDoctorDetailAPI(doctorId);
+      return res;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+export { saveDoctorInfoThunk, fetchAllDoctorsThunk ,fetchDoctorDetailThunk};

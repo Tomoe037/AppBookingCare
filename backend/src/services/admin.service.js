@@ -160,21 +160,40 @@ const saveDoctorInfoService = async (data) => {
       };
     }
 
-    // upsert (tạo mới hoặc cập nhật nếu đã có)
-    await db.Markdown.upsert({
-      doctorId,
-      contentMarkdown,
-      contentHTML,
-      description,
-    });
+    const existing = await db.Markdown.findOne({ where: { doctorId } });
 
-    return {
-      status: 200,
-      body: {
-        success: true,
-        message: "Lưu thông tin bác sĩ thành công.",
-      },
-    };
+    if (existing) {
+      // ✅ Cập nhật bài viết
+      existing.contentMarkdown = contentMarkdown;
+      existing.contentHTML = contentHTML;
+      existing.description = description;
+      await existing.save();
+
+      return {
+        status: 200,
+        body: {
+          success: true,
+          message: "Cập nhật thông tin bác sĩ thành công.",
+        },
+      };
+    } else {
+      // ✅ Thêm mới bài viết
+      await db.Markdown.create({
+        doctorId,
+        contentMarkdown,
+        contentHTML,
+        description,
+      });
+
+
+      return {
+        status: 201,
+        body: {
+          success: true,
+          message: "Thêm mới thông tin bác sĩ thành công.",
+        },
+      };
+    }
   } catch (err) {
     console.error("❌ Lỗi khi lưu thông tin bác sĩ:", err);
     return {
@@ -182,6 +201,63 @@ const saveDoctorInfoService = async (data) => {
       body: {
         success: false,
         message: "Lỗi server khi lưu thông tin bác sĩ.",
+      },
+    };
+  }
+};
+
+const getDoctorInfoService = async (doctorId) => {
+  try {
+    // Kiểm tra tồn tại bác sĩ
+    const doctor = await db.User.findOne({
+      where: { id: doctorId, roleId: "R2" },
+    });
+
+    if (!doctor) {
+      return {
+        status: 404,
+        body: {
+          success: false,
+          message: "Không tìm thấy bác sĩ với ID đã cho.",
+        },
+      };
+    }
+
+    // Tìm bài viết Markdown
+    const markdown = await db.Markdown.findOne({
+      where: { doctorId },
+    });
+
+    if (!markdown) {
+      return {
+        status: 200,
+        body: {
+          success: true,
+          hasData: false,
+          message: "Bác sĩ chưa có bài viết nào.",
+        },
+      };
+    }
+
+    return {
+      status: 200,
+      body: {
+        success: true,
+        hasData: true,
+        data: {
+          contentMarkdown: markdown.contentMarkdown,
+          contentHTML: markdown.contentHTML,
+          description: markdown.description,
+        },
+      },
+    };
+  } catch (err) {
+    console.error("Lỗi getDoctorInfoService:", err);
+    return {
+      status: 500,
+      body: {
+        success: false,
+        message: "Lỗi server khi lấy thông tin bác sĩ.",
       },
     };
   }
@@ -195,5 +271,5 @@ export {
   updateUserService,
   deleteUserService,
   getAllDoctorsService,
-  saveDoctorInfoService,
+  saveDoctorInfoService,getDoctorInfoService
 };

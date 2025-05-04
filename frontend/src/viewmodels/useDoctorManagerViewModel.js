@@ -9,7 +9,7 @@ import {
 } from "../features/doctor/doctorSlice.js";
 import {
   saveDoctorInfoThunk,
-  fetchAllDoctorsThunk,
+  fetchAllDoctorsThunk,fetchDoctorDetailThunk,
 } from "../features/doctor/doctorThunk.js";
 
 const useDoctorInfoViewModel = () => {
@@ -30,6 +30,17 @@ const useDoctorInfoViewModel = () => {
     (state) => state.doctor.loadingDoctorList
   );
   const errorDoctorList = useSelector((state) => state.doctor.errorDoctorList);
+  // get doctor by id
+  const hasDoctorData = useSelector((state) => state.doctor.doctorDetail.hasData);
+  const doctorDetailError = useSelector((state) => state.doctor.doctorDetail.error);
+  const doctorDetailLoaded = useSelector((state) => state.doctor.doctorDetail.loaded);
+
+  useEffect(() => {
+    if (selectedDoctor && doctorDetailLoaded && hasDoctorData === false) {
+      alert(`📝 Bác sĩ "${selectedDoctor.label}" hiện chưa có bài viết nào.`);
+    }
+  }, [selectedDoctor, doctorDetailLoaded, hasDoctorData]);
+
 
   useEffect(() => {
     dispatch(fetchAllDoctorsThunk());
@@ -38,9 +49,13 @@ const useDoctorInfoViewModel = () => {
   const onDoctorChange = useCallback(
     (doctor) => {
       dispatch(setSelectedDoctor(doctor));
+      setTimeout(() => {
+        dispatch(fetchDoctorDetailThunk(doctor.value));
+      }, 0);
     },
     [dispatch]
   );
+  
 
   const onContentMarkdownChange = useCallback(
     (markdown) => {
@@ -109,6 +124,7 @@ const useDoctorInfoViewModel = () => {
     onSave,
     resetDoctorForm,
     success,
+    hasDoctorData,doctorDetailError,doctorDetailLoaded
   };
 };
 
